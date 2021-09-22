@@ -15,7 +15,7 @@ my $amin = 1;
 my $amax = 190;
 
 # read file from the talys structure file, version autotalys_2021.08.09.tar
-my $TalysStructurePath = "/Users/okumuras/Documents/codes/talys/structure/fission/ff/gef/";
+my $TalysStructurePath = "/Users/sin/Documents/codes/autotalys/talys/structure/fission/ff/gef/";
 
 unlink glob('YA/*');
 
@@ -25,6 +25,7 @@ foreach my $n (@nuclides){
     # print "@base\n";
 
     foreach my $nuclide (@base){
+	# if ($nuclide eq "Hg215"){
 	my $path = $TalysStructurePath . $nuclide . "/" . $nuclide;
 	my $EnergyList =  $path .  "_gef.E";
 	my @energy =  `cat $EnergyList`;
@@ -46,7 +47,7 @@ foreach my $n (@nuclides){
 	&outtex($nuclide, @energy);
     }
 }
-
+#}
 
 sub readfpy{
     my @ffya = ();
