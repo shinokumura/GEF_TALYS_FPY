@@ -36,7 +36,7 @@ do
 	# grep neutron separation energy based on the compound nuclide
 	# n-separation.dat file has target mass
 	energy=`echo ${base#*_} | sed -e 's/MeV//'`
-	SN=`cat /Users/okumuras/Documents/calculations/talys/fpy-gef-nsep/n-separation.dat | tr -s ' ' | grep $tnuclide | cut -d ' ' -f 2 | awk '{printf "%.2f", $0}'`
+	SN=`cat n-separation.dat | tr -s ' ' | grep $tnuclide | cut -d ' ' -f 2 | awk '{printf "%.2f", $0}'`
 	
 
 	# create directry with target nuclide name
