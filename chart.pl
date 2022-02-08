@@ -14,6 +14,7 @@ my $YApath = "/Users/okumuras/Documents/codes/talys/structure/fission/ff/gef/";
 my @dirs = glob($YApath. '*');
 
 my @nuclides = ();
+my $selection = "ffex";
 
 foreach my $d (@dirs) {
     push(@nuclides, basename($d));
@@ -36,7 +37,6 @@ my $col = "l" x 122;
 
 print "\\begin{table}[htbp]\n\\begin{tabular}{$col}\n";
 #print "\\begin{table}[htbp]\n\\begin{tabular}{}\n";
-#print "\\begin{TAB}(r,1cm,2cm)[5pt]{$col}\n";
 
 my $z = 0;
 my $n = 0;
@@ -47,46 +47,24 @@ for ($z=116; $z >74; $z--){
     for ($n=92; $n < 180; $n++){
 	if (defined $this[$z][$n]){
 	    my $nul =  $this[$z][$n];
-	    my $fn = "YA/" . $nul  . "_" . "1.00e+00-eps-converted-to.pdf";
+	    my @fnl = glob("/Users/okumuras/Desktop/tmp/gef/YA/" . $nul  . "_" . "5.*e+00-eps-converted-to.pdf");
+	    if (!@fnl) {@fnl = glob("/Users/okumuras/Desktop/tmp/gef/YA/" . $nul  . "_" . "6.*e+00-eps-converted-to.pdf");}
+	    if (!@fnl) {@fnl = glob("/Users/okumuras/Desktop/tmp/gef/YA/" . $nul  . "_" . "7.*e+00-eps-converted-to.pdf");}
+	    if (!@fnl) {@fnl = glob("/Users/okumuras/Desktop/tmp/gef/YA/" . $nul  . "_" . "8.*e+00-eps-converted-to.pdf");}
+	    if (!@fnl) {@fnl = glob("/Users/okumuras/Desktop/tmp/gef/YA/" . $nul  . "_" . "9.*e+00-eps-converted-to.pdf");}
+	    if (!@fnl) {@fnl = glob("/Users/okumuras/Desktop/tmp/gef/YA/" . $nul  . "_" . "1.*e+01-eps-converted-to.pdf");}
+	    my $fn = $fnl[0];
+	    #my $fn = "Eex/" . $selection . "/" .  $nul . "_2.53e-08.eps";
 	    print"\\begin{minipage}{5mm}\\scalebox{0.1}{\\includegraphics{$fn}}\\end{minipage} & ";
 	    #print"y& ";
 	}
 	else{
-	     print"&";
+	    print"&";
 	}
     }
     print "\\\\ \\hline\n";
 }
-for ($n=90; $n < 180; $n++){print "$n &"}
+for ($n=91; $n < 180; $n++){print "$n &"}
 print "\\end{tabular}\n\\end{table}\n";
-#print "\\end{TAB}\n";
 
-=pod
-\begin{table}[htbp]
-\begin{tabular}{llllllllllllllllllll}
-z120
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
- &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & 
-z10
-n20                                                 n120
-\end{tabular}
-\end{table}
-=cut
+
