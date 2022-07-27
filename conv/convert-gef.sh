@@ -8,8 +8,19 @@
 
 mode="gef"
 # STRDIR=/Users/okumuras/Documents/codes/talys/structure/fission/ff/${mode}/*
-STRDIR=/Users/okumuras/Downloads/${mode}/*
+STRDIR=/Users/okumuras/Downloads/gefyieldfiles_1e6_1MeVspacing/
 
+
+cd $STRDIR
+
+ls -1 [O-Z]*.ff |cut -f1 -d'_' | xargs mkdir
+
+for cn in *.ff
+do
+    dir=`ls $cn | cut -f1 -d'_'`
+    mv $cn $dir/
+    
+done
 
 ############ (4) Change GEF file names
 FFTMPDIR=/Users/okumuras/Downloads/${mode}-conv/
@@ -33,13 +44,13 @@ do
 	tnuclide=$elem$mass
 	
 	# this is compound mass
-	cmass=$(( $mass+1 ))
+	cmass=$mass
 	nuclide=$elem$cmass
 
 	# grep neutron separation energy based on the compound nuclide
 	# n-separation.dat file has target mass
 	energy=`echo ${base#*_} | sed -e 's/MeV//'`
-	SN=`cat /Users/okumuras/Dropbox/Development/tendl-fpy/gef-v2/conv/n-separation.dat | tr -s ' ' | grep $nuclide | cut -d ' ' -f 2 | awk '{printf "%.2f", $0}'`
+	SN=`cat n-separation.dat | tr -s ' ' | grep $nuclide | cut -d ' ' -f 2 | awk '{printf "%.2f", $0}'`
 	
 
 	# create directry with target nuclide name
@@ -58,7 +69,7 @@ do
 	echo $base $nuclide $energy "+" $SN "===>" $nuclide/$newfilename
 	
 	cp $file $nuclide/${newfilename}.tmp
-	echo $nuclide/$newfilename.tmp $energytemp $mode | xargs perl /Users/okumuras/Dropbox/Development/tendl-fpy/gef-v2/conv/formatconv.pl > $nuclide/$newfilename
+	echo $nuclide/$newfilename.tmp $energytemp $mode | xargs perl formatconv.pl > $nuclide/$newfilename
 	## echo $nuclide/$newfilename.tmp $energytemp $mode > $nuclide/$newfilename
 	rm $nuclide/*.tmp
     
@@ -66,27 +77,5 @@ do
 done
 
 
-for nucl in $FFTMPDIR
-do
-    if [ -d "$nucl" ]; then
-	
-	base=`basename $nucl`
-	echo $base
-    ENARRAY=()
-    
-    for file in $nucl/*.ff
-    do
-	process=`basename $file | sed -E 's/_[a-z3]{3,4}.ff//'`
-	energy=`echo ${process#*_} | sed -e 's/MeV//'`
-	
-	echo "nu:" $nucl "file:" $file "process:" $process "en:" $energy
 
-	ENARRAY+=($energy)
-    done
-    
-    efile=$nucl/${base}_${mode}.E
-    printf '%s\n' "${ENARRAY[@]}"| sort -g > $efile
-
-    fi
-done
 
